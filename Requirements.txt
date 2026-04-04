@@ -1,0 +1,17 @@
+### REQUIREMENTS 
+
+Group Members and Roles:
+
+3 points: - All group members are listed with clearly defined roles in the project. - Roles are specific and well-defined, reflecting actual responsibilities for the project (e.g., &amp;amp;quot;John: UI design, Jane: API integration, Mike: Database management&amp;amp;quot;). 2 points: - Group members are listed, but roles are vague or general (e.g., &amp;amp;quot;John: Help with UI, Jane: API&amp;amp;quot;). - Some roles may not be assigned, or descriptions are unclear. 0 points: - Group members are not listed, or roles are not provided. - No clear responsibilities are defined for each team member.
+
+Physical Phone Availability:
+
+3 points: - The group confirms that they have access to at least one physical Android phone for testing. - If the group does not have access to a phone, they have promptly informed the instructor and requested a phone (if necessary). 2 points: - The group confirms access to a physical phone, but the information provided is incomplete (e.g., not clear on the number of phones available or testing plans). - There is no mention of contacting the instructor for additional devices if needed. 0 points: - The group does not confirm access to a physical phone or fails to communicate with the instructor about device availability. - The group does not have a plan for testing on physical devices.
+
+Chosen REST API:
+
+4 points: - A REST API is clearly chosen and described with a brief but comprehensive explanation of the API’s purpose and how it will be integrated into the app. - The chosen API is appropriate for the project and fits the app’s goals (e.g., fetching data, handling user input). 2 points: - A REST API is selected and described, but the explanation is vague or lacks specific details about how it will be used in the project. - The API may be somewhat relevant but not clearly tied to the app’s main functionality. 0 points: - No REST API is selected or described. - The API described is unrelated to the project’s goals or lacks sufficient detail to understand its use.
+
+Basic UI:
+
+10 points: - A simple user interface (UI) is created in Android Studio, demonstrating basic layout components such as buttons, text fields, spinners, or image views. - Screenshots of the UI are provided, showing a clear representation of the app&amp;amp;#39;s initial design and layout. - The UI is clean, intuitive, and visually appealing, following basic design principles (e.g., material design guidelines). 5 points: - A basic UI is created, but it is missing some components or lacks visual appeal. - Screenshots are provided, but the UI may not be fully responsive or well-aligned. - The UI may have minor issues with design, layout, or functionality, but the overall structure is clear. 0 points: - No user interface is created or submitted. - Screenshots are missing or do not represent a basic app layout. - The UI is non-functional, unorganized, or does not follow any design principles.

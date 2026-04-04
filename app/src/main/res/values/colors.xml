@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Material Design 3 Colors -->
+    <color name="material_dynamic_primary">#6750A4</color>
+    <color name="material_dynamic_primary80">#6750A4</color>
+    <color name="material_dynamic_secondary">#625B71</color>
+    <color name="material_dynamic_surface">#FFFBFE</color>
+    <color name="material_dynamic_surface_variant">#E7E0EC</color>
+    <color name="material_dynamic_outline">#CAC4D0</color>
+    <color name="material_dynamic_on_surface">#1C1B1F</color>
+    <color name="material_dynamic_on_surface_variant">#49454E</color>
+</resources>

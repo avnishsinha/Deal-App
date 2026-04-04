@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Game Deals</string>
+    <string name="app_title">Game Deals</string>
+    <string name="search_hint">Search game deals</string>
+    <string name="search_button">Search Deals</string>
+    <string name="no_deals_found">No deals found</string>
+    <string name="no_deals_description">Search for a game to find the best deals</string>
+    <string name="game_title">Game Title</string>
+    <string name="store_name">Store</string>
+    <string name="normal_price">$29.99</string>
+    <string name="discount_percentage">-50%</string>
+    <string name="sale_price">$14.99</string>
+    <string name="view_details">View details</string>
+    <string name="game_thumbnail">Game thumbnail</string>
+    <string name="loading">Loading deals...</string>
+</resources>
