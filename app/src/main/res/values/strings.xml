@@ -13,4 +13,17 @@
     <string name="view_details">View details</string>
     <string name="game_thumbnail">Game thumbnail</string>
     <string name="loading">Loading deals...</string>
+    
+    <!-- Game Detail Activity -->
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="view_store">View Store</string>
+    <string name="game_details">Game Details</string>
+    
+    <!-- Favorites Activity -->
+    <string name="favorites">Favorites</string>
+    <string name="favorite_games">Favorite Games</string>
+    <string name="no_favorites">No Favorite Games Yet</string>
+    <string name="no_favorites_description">Add games to your favorites to keep track of deals you like</string>
+    <string name="remove_favorite">Remove from favorites</string>
 </resources>
