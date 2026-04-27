@@ -1,5 +1,7 @@
 package com.example.gameapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -178,8 +180,39 @@ class GameDetailActivity : AppCompatActivity() {
         }
 
         viewStoreBtn.setOnClickListener {
-            Toast.makeText(this, "Redirecting to store...", Toast.LENGTH_SHORT).show()
-            // TODO: Open browser or deep link to store
+            // Get current game and open store page
+            val currentGame = viewModel.currentGame.value
+            if (currentGame != null && currentGame.dealId.isNotEmpty()) {
+                openStoreLink(currentGame.dealId)
+            } else {
+                Toast.makeText(this, "Deal information not available", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    /**
+     * Open the store link in a browser using CheapShark search
+     * Opens the game page on CheapShark which shows all store options
+     * 
+     * @param dealId The unique deal ID from CheapShark
+     */
+    private fun openStoreLink(dealId: String) {
+        try {
+            val currentGame = viewModel.currentGame.value
+            if (currentGame != null) {
+                // Use CheapShark game search page as fallback
+                // This shows the game with all available stores
+                val searchUrl = "https://www.cheapshark.com/search?q=${currentGame.title.replace(" ", "+")}"
+                
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(searchUrl)
+                startActivity(intent)
+                Toast.makeText(this, "Opening store page...", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Game information not available", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "Could not open store page: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 
