@@ -23,6 +23,7 @@
     <!-- Favorites Activity -->
     <string name="favorites">Favorites</string>
     <string name="favorite_games">Favorite Games</string>
+    <string name="view_favorites">View Favorites</string>
     <string name="no_favorites">No Favorite Games Yet</string>
     <string name="no_favorites_description">Add games to your favorites to keep track of deals you like</string>
     <string name="remove_favorite">Remove from favorites</string>

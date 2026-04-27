@@ -6,13 +6,15 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gameapp.data.FavoritesManager
 import com.example.gameapp.data.model.GameDeal
+import com.example.gameapp.viewmodel.FavoritesViewModel
 
 /**
  * FavoritesActivity - Displays list of all favorite games
@@ -30,7 +32,9 @@ class FavoritesActivity : AppCompatActivity() {
     private lateinit var favoriteGamesRecyclerView: RecyclerView
     private lateinit var emptyFavoritesLayout: LinearLayout
     private lateinit var favoritesAdapter: FavoritesAdapter
-    private lateinit var favoritesManager: FavoritesManager
+    
+    // ViewModel
+    private val viewModel: FavoritesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +48,6 @@ class FavoritesActivity : AppCompatActivity() {
             insets
         }
 
-        // Initialize FavoritesManager
-        favoritesManager = FavoritesManager(this)
-
         // Initialize views
         initializeViews()
 
@@ -56,14 +57,17 @@ class FavoritesActivity : AppCompatActivity() {
         // Setup RecyclerView
         setupRecyclerView()
 
+        // Setup ViewModel observers
+        setupViewModelObservers()
+
         // Load and display favorites
-        loadFavorites()
+        viewModel.loadFavorites()
     }
 
     override fun onResume() {
         super.onResume()
         // Refresh favorites list when activity resumes
-        loadFavorites()
+        viewModel.loadFavorites()
     }
 
     /**
@@ -108,36 +112,40 @@ class FavoritesActivity : AppCompatActivity() {
     }
 
     /**
+     * Setup ViewModel observers
+     */
+    private fun setupViewModelObservers() {
+        // Observe favorites list changes
+        viewModel.favorites.observe(this, Observer { favorites ->
+            favoritesAdapter.updateFavorites(favorites)
+            // Update toolbar subtitle with count
+            supportActionBar?.subtitle = "${favorites.size} games saved"
+        })
+        
+        // Observe empty state
+        viewModel.isEmpty.observe(this, Observer { isEmpty ->
+            showEmptyState(isEmpty)
+        })
+        
+        // Observe action messages
+        viewModel.actionMessage.observe(this, Observer { message ->
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        })
+    }
+
+    /**
      * Load all favorites from storage and display them
      */
     private fun loadFavorites() {
-        val favorites = favoritesManager.getAllFavorites()
-
-        if (favorites.isEmpty()) {
-            showEmptyState(true)
-        } else {
-            showEmptyState(false)
-            favoritesAdapter.updateFavorites(favorites)
-        }
-
-        // Update toolbar subtitle with count
-        supportActionBar?.subtitle = "${favorites.size} games saved"
+        // This method is kept for reference but is now handled by ViewModel
+        // The viewModel.loadFavorites() call in onCreate handles this
     }
 
     /**
      * Show confirmation and remove favorite
      */
     private fun removeFavoriteConfirm(game: GameDeal) {
-        favoritesManager.removeFromFavorites(game.dealId)
-        favoritesAdapter.removeFavorite(game)
-        
-        val remaining = favoritesManager.getAllFavorites()
-        if (remaining.isEmpty()) {
-            showEmptyState(true)
-        }
-        
-        supportActionBar?.subtitle = "${remaining.size} games saved"
-        Toast.makeText(this, "${game.title} removed from favorites", Toast.LENGTH_SHORT).show()
+        viewModel.removeFavorite(game)
     }
 
     /**

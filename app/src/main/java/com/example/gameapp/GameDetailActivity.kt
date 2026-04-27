@@ -6,13 +6,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
-import com.example.gameapp.data.FavoritesManager
 import com.example.gameapp.data.model.GameDeal
 import com.example.gameapp.data.model.StoreNames
+import com.example.gameapp.viewmodel.GameDetailViewModel
 import com.google.android.material.button.MaterialButton
 import kotlin.math.round
 
@@ -41,9 +43,8 @@ class GameDetailActivity : AppCompatActivity() {
     private lateinit var addToFavoritesBtn: MaterialButton
     private lateinit var viewStoreBtn: MaterialButton
 
-    private lateinit var favoritesManager: FavoritesManager
-    private var currentGame: GameDeal? = null
-    private var isFavorited = false
+    // ViewModel
+    private val viewModel: GameDetailViewModel by viewModels()
 
     companion object {
         const val EXTRA_GAME_DEAL = "game_deal"
@@ -61,21 +62,19 @@ class GameDetailActivity : AppCompatActivity() {
             insets
         }
 
-        // Initialize FavoritesManager
-        favoritesManager = FavoritesManager(this)
-
         // Initialize views
         initializeViews()
 
         // Setup toolbar back button
         setupToolbar()
 
+        // Setup ViewModel observers
+        setupViewModelObservers()
+
         // Get game data from intent
         val game = intent.getSerializableExtra(EXTRA_GAME_DEAL) as? GameDeal
         if (game != null) {
-            currentGame = game
-            displayGameDetails(game)
-            checkIfFavorited()
+            viewModel.setCurrentGame(game)
         } else {
             Toast.makeText(this, "Error loading game details", Toast.LENGTH_SHORT).show()
             finish()
@@ -151,26 +150,23 @@ class GameDetailActivity : AppCompatActivity() {
     }
 
     /**
-     * Check if the current game is in favorites and update button accordingly
+     * Setup ViewModel observers
      */
-    private fun checkIfFavorited() {
-        currentGame?.let { game ->
-            isFavorited = favoritesManager.isFavorite(game.dealId)
-            updateFavoritesButton()
-        }
-    }
-
-    /**
-     * Update the favorites button appearance based on favorited state
-     */
-    private fun updateFavoritesButton() {
-        if (isFavorited) {
-            addToFavoritesBtn.text = "Remove from Favorites"
-            addToFavoritesBtn.setStrokeColorResource(android.R.color.holo_red_light)
-        } else {
-            addToFavoritesBtn.text = "Add to Favorites"
-            addToFavoritesBtn.setStrokeColorResource(R.color.material_dynamic_primary)
-        }
+    private fun setupViewModelObservers() {
+        // Observe current game changes
+        viewModel.currentGame.observe(this, Observer { game ->
+            displayGameDetails(game)
+        })
+        
+        // Observe favorite status changes
+        viewModel.isFavorited.observe(this, Observer { isFavorited ->
+            updateFavoritesButton(isFavorited)
+        })
+        
+        // Observe action messages
+        viewModel.actionMessage.observe(this, Observer { message ->
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        })
     }
 
     /**
@@ -178,23 +174,33 @@ class GameDetailActivity : AppCompatActivity() {
      */
     private fun setupButtonListeners() {
         addToFavoritesBtn.setOnClickListener {
-            currentGame?.let { game ->
-                if (isFavorited) {
-                    favoritesManager.removeFromFavorites(game.dealId)
-                    isFavorited = false
-                    Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT).show()
-                } else {
-                    favoritesManager.addToFavorites(game)
-                    isFavorited = true
-                    Toast.makeText(this, "Added to favorites", Toast.LENGTH_SHORT).show()
-                }
-                updateFavoritesButton()
-            }
+            viewModel.toggleFavorite()
         }
 
         viewStoreBtn.setOnClickListener {
             Toast.makeText(this, "Redirecting to store...", Toast.LENGTH_SHORT).show()
             // TODO: Open browser or deep link to store
+        }
+    }
+
+    /**
+     * Check if the current game is in favorites and update button accordingly
+     */
+    private fun checkIfFavorited() {
+        // This method is kept for reference but is now handled by ViewModel
+        // The viewModel.setCurrentGame() call handles this
+    }
+
+    /**
+     * Update the favorites button appearance based on favorited state
+     */
+    private fun updateFavoritesButton(isFavorited: Boolean) {
+        if (isFavorited) {
+            addToFavoritesBtn.text = "Remove from Favorites"
+            addToFavoritesBtn.setStrokeColorResource(android.R.color.holo_red_light)
+        } else {
+            addToFavoritesBtn.text = "Add to Favorites"
+            addToFavoritesBtn.setStrokeColorResource(R.color.material_dynamic_primary)
         }
     }
 

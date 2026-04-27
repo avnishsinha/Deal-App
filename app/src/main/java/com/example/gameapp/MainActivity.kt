@@ -7,17 +7,17 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gameapp.data.api.RetrofitInstance
 import com.example.gameapp.data.model.GameDeal
+import com.example.gameapp.viewmodel.GameDealsViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.launch
 
 /**
  * MainActivity - Main screen for displaying game deals
@@ -46,6 +46,9 @@ class MainActivity : AppCompatActivity() {
 
     // Adapter for displaying deals
     private lateinit var dealAdapter: GameDealAdapter
+    
+    // ViewModel
+    private val viewModel: GameDealsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,9 +70,12 @@ class MainActivity : AppCompatActivity() {
         
         // Setup search functionality
         setupSearchButton()
+        
+        // Setup ViewModel observers
+        setupViewModelObservers()
 
         // Load initial deals on app start
-        loadInitialDeals()
+        viewModel.loadInitialDeals()
     }
 
     /**
@@ -111,7 +117,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Setup search button click listener
-     * Validates input and fetches game deals from CheapShark API
+     * Validates input and calls ViewModel to fetch game deals
      */
     private fun setupSearchButton() {
         searchButton.setOnClickListener {
@@ -121,9 +127,41 @@ class MainActivity : AppCompatActivity() {
                 searchEditText.error = "Please enter a game title"
                 Toast.makeText(this, "Enter a game name to search", Toast.LENGTH_SHORT).show()
             } else {
-                fetchGameDeals(searchQuery)
+                viewModel.searchDeals(searchQuery)
             }
         }
+    }
+
+    /**
+     * Setup LiveData observers from ViewModel
+     * Called once during onCreate to observe data changes
+     */
+    private fun setupViewModelObservers() {
+        // Observe deals list changes
+        viewModel.deals.observe(this, Observer { deals ->
+            dealAdapter.updateDeals(deals)
+        })
+        
+        // Observe loading state
+        viewModel.isLoading.observe(this, Observer { isLoading ->
+            showLoading(isLoading)
+        })
+        
+        // Observe empty state
+        viewModel.isEmpty.observe(this, Observer { isEmpty ->
+            if (isEmpty) {
+                showEmptyState(true)
+            } else {
+                showEmptyState(false)
+            }
+        })
+        
+        // Observe error messages
+        viewModel.errorMessage.observe(this, Observer { error ->
+            if (error.isNotEmpty()) {
+                handleError(error)
+            }
+        })
     }
 
     /**
@@ -131,74 +169,19 @@ class MainActivity : AppCompatActivity() {
      * Shows the most popular/rated deals without requiring user input
      */
     private fun loadInitialDeals() {
-        lifecycleScope.launch {
-            try {
-                showLoading(true)
-                // Fetch top deals
-                val deals = RetrofitInstance.apiService.getDeals(
-                    pageNumber = 0,
-                    pageSize = 20,
-                    sortBy = "Deal Rating",
-                    desc = 1
-                )
-                
-                if (deals.isNotEmpty()) {
-                    dealAdapter.updateDeals(deals)
-                    showEmptyState(false)
-                } else {
-                    showEmptyState(true)
-                }
-            } catch (e: Exception) {
-                handleError("Failed to load initial deals: ${e.message}")
-                showEmptyState(true)
-            } finally {
-                showLoading(false)
-            }
-        }
+        // This method is kept for reference but is now handled by ViewModel
+        // The viewModel.loadInitialDeals() call in onCreate handles this
     }
 
     /**
-     * Fetch game deals based on search query from CheapShark API
+     * Fetch game deals based on search query
      * Searches for deals matching the user's search query
      *
      * @param query The search query (game title)
      */
     private fun fetchGameDeals(query: String) {
-        lifecycleScope.launch {
-            try {
-                showLoading(true)
-                showEmptyState(false)
-
-                // Call API to search for deals
-                val deals = RetrofitInstance.apiService.searchDeals(
-                    title = query,
-                    limit = 60,
-                    sortBy = "Deal Rating",
-                    desc = 1
-                )
-
-                if (deals.isNotEmpty()) {
-                    dealAdapter.updateDeals(deals)
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Found ${deals.size} deals",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    showEmptyState(true)
-                    Toast.makeText(
-                        this@MainActivity,
-                        "No deals found for '$query'",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } catch (e: Exception) {
-                handleError("Error searching deals: ${e.message}")
-                showEmptyState(true)
-            } finally {
-                showLoading(false)
-            }
-        }
+        // This method is kept for reference but is now handled by ViewModel
+        // The viewModel.searchDeals(query) call in setupSearchButton handles this
     }
 
     /**
