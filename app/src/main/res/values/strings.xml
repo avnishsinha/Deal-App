@@ -29,4 +29,10 @@
     <string name="no_favorites_description">Add games to your favorites to keep track of deals you like</string>
     <string name="remove_favorite">Remove from favorites</string>
     <string name="discount_filter_error">Discount must be between 0 and 100</string>
+    <string name="alarm_90_off">Alert me for 90%+ off deals</string>
+    <string name="alarm_90_off_enabled">90% off alarm enabled</string>
+    <string name="alarm_90_off_disabled">90% off alarm disabled</string>
+    <string name="game_alarm_enabled">Alarm set for %1$s</string>
+    <string name="game_alarm_disabled">Alarm removed for %1$s</string>
+    <string name="alarm_match_found">Deal alarm: %1$s</string>
 </resources>

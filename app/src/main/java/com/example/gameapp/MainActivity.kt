@@ -14,9 +14,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.gameapp.data.DealAlarmManager
 import com.example.gameapp.data.model.GameDeal
 import com.example.gameapp.viewmodel.GameDealsViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputEditText
 
 /**
@@ -41,13 +43,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var discountFilterEditText: TextInputEditText
     private lateinit var searchButton: MaterialButton
     private lateinit var favoritesButton: MaterialButton
+    private lateinit var ninetyOffAlarmSwitch: MaterialSwitch
     private lateinit var dealsRecyclerView: RecyclerView
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var emptyStateLayout: LinearLayout
 
     // Adapter for displaying deals
     private lateinit var dealAdapter: GameDealAdapter
-    
+    private lateinit var alarmManager: DealAlarmManager
+
     // ViewModel
     private val viewModel: GameDealsViewModel by viewModels()
 
@@ -66,11 +70,14 @@ class MainActivity : AppCompatActivity() {
         // Initialize UI components
         initializeViews()
         
+        alarmManager = DealAlarmManager(this)
+
         // Setup RecyclerView
         setupRecyclerView()
         
         // Setup search functionality
         setupSearchButton()
+        setupAlarmControls()
         
         // Setup ViewModel observers
         setupViewModelObservers()
@@ -89,6 +96,7 @@ class MainActivity : AppCompatActivity() {
         dealsRecyclerView = findViewById(R.id.dealsRecyclerView)
         loadingProgressBar = findViewById(R.id.loadingProgressBar)
         emptyStateLayout = findViewById(R.id.emptyStateLayout)
+        ninetyOffAlarmSwitch = findViewById(R.id.ninetyOffAlarmSwitch)
         
         // Try to find favorites button (may not exist in old layout)
         try {
@@ -108,6 +116,15 @@ class MainActivity : AppCompatActivity() {
         dealAdapter = GameDealAdapter(
             onItemClick = { game ->
                 openGameDetail(game)
+            },
+            onAlarmToggle = { game ->
+                val isEnabled = alarmManager.toggleGameAlarm(game.title)
+                val messageRes = if (isEnabled) R.string.game_alarm_enabled else R.string.game_alarm_disabled
+                Toast.makeText(this, getString(messageRes, game.title), Toast.LENGTH_SHORT).show()
+                dealAdapter.notifyDataSetChanged()
+            },
+            isAlarmEnabledForGame = { game ->
+                alarmManager.hasAlarmForGame(game.title)
             }
         )
         dealsRecyclerView.apply {
@@ -138,6 +155,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupAlarmControls() {
+        ninetyOffAlarmSwitch.isChecked = alarmManager.isNinetyPercentAlarmEnabled()
+        ninetyOffAlarmSwitch.setOnCheckedChangeListener { _, isChecked ->
+            alarmManager.setNinetyPercentAlarmEnabled(isChecked)
+            val message = if (isChecked) {
+                getString(R.string.alarm_90_off_enabled)
+            } else {
+                getString(R.string.alarm_90_off_disabled)
+            }
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun getMinDiscountFilter(): Int? {
         val rawValue = discountFilterEditText.text.toString().trim()
         if (rawValue.isEmpty()) {
@@ -163,6 +193,7 @@ class MainActivity : AppCompatActivity() {
         // Observe deals list changes
         viewModel.deals.observe(this, Observer { deals ->
             dealAdapter.updateDeals(deals)
+            notifyAlarmMatches(deals)
         })
         
         // Observe loading state
@@ -205,6 +236,20 @@ class MainActivity : AppCompatActivity() {
     private fun fetchGameDeals(query: String) {
         // This method is kept for reference but is now handled by ViewModel
         // The viewModel.searchDeals(query) call in setupSearchButton handles this
+    }
+
+    private fun notifyAlarmMatches(deals: List<GameDeal>) {
+        val ninetyPercentEnabled = alarmManager.isNinetyPercentAlarmEnabled()
+        val matchedDeals = deals.filter { deal ->
+            (ninetyPercentEnabled && deal.savings >= 90.0) || alarmManager.hasAlarmForGame(deal.title)
+        }
+
+        if (matchedDeals.isNotEmpty()) {
+            val topTitles = matchedDeals.take(3).joinToString { it.title }
+            val suffix = if (matchedDeals.size > 3) "..." else ""
+            val message = getString(R.string.alarm_match_found, topTitles + suffix)
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        }
     }
 
     /**

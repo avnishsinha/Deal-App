@@ -67,6 +67,13 @@
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/ninetyOffAlarmSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/alarm_90_off" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

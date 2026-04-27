@@ -10,6 +10,7 @@ import com.google.android.material.card.MaterialCardView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.google.android.material.button.MaterialButton
 import kotlin.math.round
 
 /**
@@ -18,7 +19,9 @@ import kotlin.math.round
  */
 class GameDealAdapter(
     private val deals: MutableList<GameDeal> = mutableListOf(),
-    private val onItemClick: (GameDeal) -> Unit = {}
+    private val onItemClick: (GameDeal) -> Unit = {},
+    private val onAlarmToggle: (GameDeal) -> Unit = {},
+    private val isAlarmEnabledForGame: (GameDeal) -> Boolean = { false }
 ) :
     RecyclerView.Adapter<GameDealAdapter.GameDealViewHolder>() {
 
@@ -35,6 +38,7 @@ class GameDealAdapter(
         private val salePrice: TextView = cardView.findViewById(R.id.salePrice)
         private val discountBadge: LinearLayout = cardView.findViewById(R.id.discountBadge)
         private val discountPercentage: TextView = cardView.findViewById(R.id.discountPercentage)
+        private val alarmButton: MaterialButton = cardView.findViewById(R.id.alarmButton)
 
         /**
          * Bind game deal data to the views
@@ -66,6 +70,13 @@ class GameDealAdapter(
                 discountBadge.visibility = android.view.View.VISIBLE
             } else {
                 discountBadge.visibility = android.view.View.GONE
+            }
+
+            val alarmEnabled = isAlarmEnabledForGame(deal)
+            alarmButton.text = if (alarmEnabled) "Alarm On" else "Set Alarm"
+
+            alarmButton.setOnClickListener {
+                onAlarmToggle(deal)
             }
 
             // Set up card click listener to open detail page
