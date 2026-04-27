@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     // UI Components
     private lateinit var searchEditText: TextInputEditText
+    private lateinit var discountFilterEditText: TextInputEditText
     private lateinit var searchButton: MaterialButton
     private lateinit var favoritesButton: MaterialButton
     private lateinit var dealsRecyclerView: RecyclerView
@@ -83,6 +84,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun initializeViews() {
         searchEditText = findViewById(R.id.searchEditText)
+        discountFilterEditText = findViewById(R.id.discountFilterEditText)
         searchButton = findViewById(R.id.searchButton)
         dealsRecyclerView = findViewById(R.id.dealsRecyclerView)
         loadingProgressBar = findViewById(R.id.loadingProgressBar)
@@ -122,14 +124,35 @@ class MainActivity : AppCompatActivity() {
     private fun setupSearchButton() {
         searchButton.setOnClickListener {
             val searchQuery = searchEditText.text.toString().trim()
+            val minDiscount = getMinDiscountFilter()
+            if (minDiscount == null) {
+                return@setOnClickListener
+            }
             
             if (searchQuery.isEmpty()) {
                 searchEditText.error = "Please enter a game title"
                 Toast.makeText(this, "Enter a game name to search", Toast.LENGTH_SHORT).show()
             } else {
-                viewModel.searchDeals(searchQuery)
+                viewModel.searchDeals(searchQuery, minDiscount)
             }
         }
+    }
+
+    private fun getMinDiscountFilter(): Int? {
+        val rawValue = discountFilterEditText.text.toString().trim()
+        if (rawValue.isEmpty()) {
+            discountFilterEditText.error = null
+            return 0
+        }
+
+        val parsedValue = rawValue.toIntOrNull()
+        if (parsedValue == null || parsedValue !in 0..100) {
+            discountFilterEditText.error = getString(R.string.discount_filter_error)
+            return null
+        }
+
+        discountFilterEditText.error = null
+        return parsedValue
     }
 
     /**

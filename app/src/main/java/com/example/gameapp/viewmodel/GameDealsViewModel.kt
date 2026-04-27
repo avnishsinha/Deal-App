@@ -34,14 +34,17 @@ class GameDealsViewModel(application: Application) : AndroidViewModel(applicatio
     private val _isEmpty = MutableLiveData<Boolean>(false)
     val isEmpty: LiveData<Boolean> = _isEmpty
 
+    private var selectedMinDiscount = 0
+
     /**
      * Load initial deals on app start
      */
-    fun loadInitialDeals() {
+    fun loadInitialDeals(minDiscount: Int = selectedMinDiscount) {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
                 _errorMessage.value = ""
+                selectedMinDiscount = minDiscount.coerceIn(0, 100)
                 
                 val deals = repository.getDeals(
                     pageNumber = 0,
@@ -50,8 +53,9 @@ class GameDealsViewModel(application: Application) : AndroidViewModel(applicatio
                     desc = 1
                 )
                 
-                _deals.value = deals
-                _isEmpty.value = deals.isEmpty()
+                val filteredDeals = filterDealsByDiscount(deals, selectedMinDiscount)
+                _deals.value = filteredDeals
+                _isEmpty.value = filteredDeals.isEmpty()
             } catch (e: Exception) {
                 _errorMessage.value = e.message ?: "Unknown error occurred"
                 _isEmpty.value = true
@@ -64,7 +68,7 @@ class GameDealsViewModel(application: Application) : AndroidViewModel(applicatio
     /**
      * Search for games by title
      */
-    fun searchDeals(query: String) {
+    fun searchDeals(query: String, minDiscount: Int = selectedMinDiscount) {
         if (query.trim().isEmpty()) {
             _errorMessage.value = "Please enter a game title"
             return
@@ -74,6 +78,7 @@ class GameDealsViewModel(application: Application) : AndroidViewModel(applicatio
             try {
                 _isLoading.value = true
                 _errorMessage.value = ""
+                selectedMinDiscount = minDiscount.coerceIn(0, 100)
                 
                 val deals = repository.searchDeals(
                     title = query,
@@ -82,8 +87,9 @@ class GameDealsViewModel(application: Application) : AndroidViewModel(applicatio
                     desc = 1
                 )
                 
-                _deals.value = deals
-                _isEmpty.value = deals.isEmpty()
+                val filteredDeals = filterDealsByDiscount(deals, selectedMinDiscount)
+                _deals.value = filteredDeals
+                _isEmpty.value = filteredDeals.isEmpty()
             } catch (e: Exception) {
                 _errorMessage.value = e.message ?: "Search failed"
                 _isEmpty.value = true
@@ -91,5 +97,10 @@ class GameDealsViewModel(application: Application) : AndroidViewModel(applicatio
                 _isLoading.value = false
             }
         }
+    }
+
+    private fun filterDealsByDiscount(deals: List<GameDeal>, minDiscount: Int): List<GameDeal> {
+        if (minDiscount <= 0) return deals
+        return deals.filter { it.savings >= minDiscount }
     }
 }

@@ -2,6 +2,7 @@
     <string name="app_name">Game Deals</string>
     <string name="app_title">Game Deals</string>
     <string name="search_hint">Search game deals</string>
+    <string name="min_discount_hint">Min discount % (optional)</string>
     <string name="search_button">Search Deals</string>
     <string name="no_deals_found">No deals found</string>
     <string name="no_deals_description">Search for a game to find the best deals</string>
@@ -27,4 +28,5 @@
     <string name="no_favorites">No Favorite Games Yet</string>
     <string name="no_favorites_description">Add games to your favorites to keep track of deals you like</string>
     <string name="remove_favorite">Remove from favorites</string>
+    <string name="discount_filter_error">Discount must be between 0 and 100</string>
 </resources>
