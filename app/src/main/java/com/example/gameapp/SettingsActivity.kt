@@ -1,6 +1,7 @@
 package com.example.gameapp
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +22,9 @@ class SettingsActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_settings)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.settingsToolbar).parent as android.view.View) { v, insets ->
+        toolbar = findViewById<MaterialToolbar>(R.id.settingsToolbar)
+        val settingsContainer = toolbar.parent as View
+        ViewCompat.setOnApplyWindowInsetsListener(settingsContainer) { v: View, insets: WindowInsetsCompat ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -29,14 +32,13 @@ class SettingsActivity : AppCompatActivity() {
 
         alarmManager = DealAlarmManager(this)
         
-        toolbar = findViewById(R.id.settingsToolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        ninetyOffAlarmSwitch = findViewById(R.id.settingsNinetyOffAlarmSwitch)
+        ninetyOffAlarmSwitch = findViewById<MaterialSwitch>(R.id.settingsNinetyOffAlarmSwitch)
         setupAlarmSwitch()
     }
 
