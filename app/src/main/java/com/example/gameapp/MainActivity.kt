@@ -3,6 +3,7 @@ package com.example.gameapp
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -35,6 +36,7 @@ import com.google.android.material.textfield.TextInputEditText
  * - Error handling with user-friendly messages
  * - Click on deals to view details
  * - Save games to favorites
+ * - Settings and Notifications
  */
 class MainActivity : AppCompatActivity() {
 
@@ -43,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var discountFilterEditText: TextInputEditText
     private lateinit var searchButton: MaterialButton
     private lateinit var favoritesButton: MaterialButton
+    private lateinit var settingsButton: ImageButton
     private lateinit var ninetyOffAlarmSwitch: MaterialSwitch
     private lateinit var dealsRecyclerView: RecyclerView
     private lateinit var loadingProgressBar: ProgressBar
@@ -86,6 +89,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.loadInitialDeals()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Refresh alarm switch state in case it was changed in SettingsActivity
+        if (::ninetyOffAlarmSwitch.isInitialized) {
+            ninetyOffAlarmSwitch.isChecked = alarmManager.isNinetyPercentAlarmEnabled()
+        }
+    }
+
     /**
      * Initialize all view references from the layout
      */
@@ -98,6 +109,11 @@ class MainActivity : AppCompatActivity() {
         emptyStateLayout = findViewById(R.id.emptyStateLayout)
         ninetyOffAlarmSwitch = findViewById(R.id.ninetyOffAlarmSwitch)
         
+        settingsButton = findViewById(R.id.settingsButton)
+        settingsButton.setOnClickListener {
+            openSettingsActivity()
+        }
+
         // Try to find favorites button (may not exist in old layout)
         try {
             favoritesButton = findViewById(R.id.favoritesButton)
@@ -218,26 +234,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    /**
-     * Load initial deals on app start
-     * Shows the most popular/rated deals without requiring user input
-     */
-    private fun loadInitialDeals() {
-        // This method is kept for reference but is now handled by ViewModel
-        // The viewModel.loadInitialDeals() call in onCreate handles this
-    }
-
-    /**
-     * Fetch game deals based on search query
-     * Searches for deals matching the user's search query
-     *
-     * @param query The search query (game title)
-     */
-    private fun fetchGameDeals(query: String) {
-        // This method is kept for reference but is now handled by ViewModel
-        // The viewModel.searchDeals(query) call in setupSearchButton handles this
-    }
-
     private fun notifyAlarmMatches(deals: List<GameDeal>) {
         val ninetyPercentEnabled = alarmManager.isNinetyPercentAlarmEnabled()
         val matchedDeals = deals.filter { deal ->
@@ -269,6 +265,13 @@ class MainActivity : AppCompatActivity() {
      */
     private fun openFavoritesActivity() {
         startActivity(Intent(this, FavoritesActivity::class.java))
+    }
+
+    /**
+     * Open settings activity
+     */
+    private fun openSettingsActivity() {
+        startActivity(Intent(this, SettingsActivity::class.java))
     }
 
     /**

@@ -35,4 +35,10 @@
     <string name="game_alarm_enabled">Alarm set for %1$s</string>
     <string name="game_alarm_disabled">Alarm removed for %1$s</string>
     <string name="alarm_match_found">Deal alarm: %1$s</string>
+
+    <!-- Settings Activity -->
+    <string name="settings">Settings</string>
+    <string name="notifications">Notifications</string>
+    <string name="app_info">App Info</string>
+    <string name="version_label">Version 1.0.0</string>
 </resources>
