@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?android:attr/windowBackground"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -13,17 +13,17 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/material_dynamic_primary80"
+        android:background="?attr/colorPrimary"
         android:elevation="4dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/material_dynamic_primary80"
+            android:background="?attr/colorPrimary"
             app:elevation="0dp"
             app:title="Game Deals"
-            app:titleTextColor="@color/white">
+            app:titleTextColor="?attr/colorOnPrimary">
 
             <ImageButton
                 android:id="@+id/settingsButton"
@@ -34,7 +34,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/settings"
                 android:src="@drawable/ic_settings"
-                app:tint="@color/white" />
+                app:tint="?attr/colorOnPrimary" />
 
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -43,7 +43,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?android:attr/windowBackground"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -102,7 +102,6 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/search_button"
-                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -115,12 +114,10 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:text="@string/favorites"
-                android:textColor="@color/material_dynamic_primary80"
                 android:tooltipText="@string/view_favorites"
                 app:cornerRadius="8dp"
                 app:iconGravity="textStart"
                 app:iconSize="24dp"
-                app:strokeColor="@color/material_dynamic_primary80"
                 app:strokeWidth="2dp" />
         </LinearLayout>
     </LinearLayout>
@@ -129,7 +126,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/material_dynamic_outline" />
+        android:background="?attr/dividerHorizontal" />
 
     <!-- Loading Indicator -->
     <ProgressBar
@@ -166,7 +163,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_deals_found"
-            android:textColor="@color/material_dynamic_secondary"
+            android:textColor="?attr/colorSecondary"
             android:textSize="18sp" />
 
         <TextView
@@ -174,7 +171,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/no_deals_description"
-            android:textColor="@color/material_dynamic_on_surface_variant"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
     </LinearLayout>
 

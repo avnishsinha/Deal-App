@@ -6,23 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="?android:attr/windowBackground"
     tools:context=".FavoritesActivity">
 
     <!-- App Bar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/material_dynamic_primary80"
+        android:background="?attr/colorPrimary"
         android:elevation="4dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/material_dynamic_primary80"
+            android:background="?attr/colorPrimary"
             app:title="Favorite Games"
-            app:titleTextColor="@color/white"
+            app:titleTextColor="?attr/colorOnPrimary"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:elevation="0dp" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -53,7 +53,7 @@
             android:layout_height="80dp"
             android:src="@drawable/ic_favorite_empty"
             android:contentDescription="@string/no_favorites"
-            android:tint="@color/material_dynamic_outline"
+            android:tint="?attr/colorOutline"
             android:scaleType="centerInside"
             android:layout_marginBottom="16dp" />
 
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:text="@string/no_favorites"
             android:textSize="18sp"
-            android:textColor="@color/material_dynamic_secondary"
+            android:textColor="?attr/colorSecondary"
             android:gravity="center" />
 
         <TextView
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:text="@string/no_favorites_description"
             android:textSize="14sp"
-            android:textColor="@color/material_dynamic_on_surface_variant"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginTop="8dp"
             android:gravity="center" />
     </LinearLayout>
