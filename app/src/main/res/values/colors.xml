@@ -12,4 +12,52 @@
     <color name="material_dynamic_outline">#CAC4D0</color>
     <color name="material_dynamic_on_surface">#1C1B1F</color>
     <color name="material_dynamic_on_surface_variant">#49454E</color>
+
+    <!-- Theme 1: Material Classic -->
+    <color name="classic_primary">#00796B</color>
+    <color name="classic_secondary">#FFC107</color>
+    <color name="classic_background">#FFFFFF</color>
+    <color name="classic_text">#212121</color>
+
+    <!-- Theme 2: Midnight Neon -->
+    <color name="neon_primary">#BB86FC</color>
+    <color name="neon_secondary">#03DAC6</color>
+    <color name="neon_background">#121212</color>
+    <color name="neon_text">#E0E0E0</color>
+
+    <!-- Theme 3: Nordic Frost -->
+    <color name="frost_primary">#4A90E2</color>
+    <color name="frost_secondary">#50E3C2</color>
+    <color name="frost_background">#F5F7FA</color>
+    <color name="frost_text">#2D3436</color>
+
+    <!-- Theme 4: High Contrast -->
+    <color name="contrast_primary">#D32F2F</color>
+    <color name="contrast_secondary">#000000</color>
+    <color name="contrast_background">#FFFFFF</color>
+    <color name="contrast_text">#000000</color>
+
+    <!-- Theme 5: Sunset Pulse -->
+    <color name="sunset_primary">#FF5722</color>
+    <color name="sunset_secondary">#FF4081</color>
+    <color name="sunset_background">#FFF8F6</color>
+    <color name="sunset_text">#263238</color>
+
+    <!-- Theme 6: Forest Stealth -->
+    <color name="forest_primary">#81C784</color>
+    <color name="forest_secondary">#AED581</color>
+    <color name="forest_background">#1B241B</color>
+    <color name="forest_text">#F1F8E9</color>
+
+    <!-- Theme 7: Royal Gold -->
+    <color name="royal_primary">#C5A059</color>
+    <color name="royal_secondary">#2C3E50</color>
+    <color name="royal_background">#FFFFFF</color>
+    <color name="royal_text">#1A1A1A</color>
+
+    <!-- Theme 8: Crimson Night -->
+    <color name="crimson_primary">#CF6679</color>
+    <color name="crimson_secondary">#FF7597</color>
+    <color name="crimson_background">#000000</color>
+    <color name="crimson_text">#FFFFFF</color>
 </resources>

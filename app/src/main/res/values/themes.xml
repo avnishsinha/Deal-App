@@ -1,9 +1,98 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.GameApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/material_dynamic_primary</item>
+        <item name="colorSecondary">@color/material_dynamic_secondary</item>
+        <item name="android:windowBackground">@color/material_dynamic_surface</item>
     </style>
 
     <style name="Theme.GameApp" parent="Base.Theme.GameApp" />
+
+    <!-- Theme 1: Material Classic -->
+    <style name="Theme.GameApp.Classic" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/classic_primary</item>
+        <item name="colorSecondary">@color/classic_secondary</item>
+        <item name="android:windowBackground">@color/classic_background</item>
+        <item name="android:textColorPrimary">@color/classic_text</item>
+        <item name="colorSurface">@color/classic_background</item>
+        <item name="colorOnSurface">@color/classic_text</item>
+        <item name="colorSurfaceVariant">#F5F5F5</item>
+    </style>
+
+    <!-- Theme 2: Midnight Neon -->
+    <style name="Theme.GameApp.Neon" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/neon_primary</item>
+        <item name="colorSecondary">@color/neon_secondary</item>
+        <item name="android:windowBackground">@color/neon_background</item>
+        <item name="android:textColorPrimary">@color/neon_text</item>
+        <item name="colorSurface">@color/neon_background</item>
+        <item name="colorOnSurface">@color/neon_text</item>
+        <item name="colorSurfaceVariant">#2A2A2A</item>
+    </style>
+
+    <!-- Theme 3: Nordic Frost -->
+    <style name="Theme.GameApp.Frost" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/frost_primary</item>
+        <item name="colorSecondary">@color/frost_secondary</item>
+        <item name="android:windowBackground">@color/frost_background</item>
+        <item name="android:textColorPrimary">@color/frost_text</item>
+        <item name="colorSurface">@color/frost_background</item>
+        <item name="colorOnSurface">@color/frost_text</item>
+        <item name="colorSurfaceVariant">#E1E8EE</item>
+    </style>
+
+    <!-- Theme 4: High Contrast -->
+    <style name="Theme.GameApp.Contrast" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/contrast_primary</item>
+        <item name="colorSecondary">@color/contrast_secondary</item>
+        <item name="android:windowBackground">@color/contrast_background</item>
+        <item name="android:textColorPrimary">@color/contrast_text</item>
+        <item name="colorSurface">@color/contrast_background</item>
+        <item name="colorOnSurface">@color/contrast_text</item>
+        <item name="colorSurfaceVariant">#EEEEEE</item>
+    </style>
+
+    <!-- Theme 5: Sunset Pulse -->
+    <style name="Theme.GameApp.Sunset" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/sunset_primary</item>
+        <item name="colorSecondary">@color/sunset_secondary</item>
+        <item name="android:windowBackground">@color/sunset_background</item>
+        <item name="android:textColorPrimary">@color/sunset_text</item>
+        <item name="colorSurface">@color/sunset_background</item>
+        <item name="colorOnSurface">@color/sunset_text</item>
+        <item name="colorSurfaceVariant">#FFEDEA</item>
+    </style>
+
+    <!-- Theme 6: Forest Stealth -->
+    <style name="Theme.GameApp.Forest" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/forest_primary</item>
+        <item name="colorSecondary">@color/forest_secondary</item>
+        <item name="android:windowBackground">@color/forest_background</item>
+        <item name="android:textColorPrimary">@color/forest_text</item>
+        <item name="colorSurface">@color/forest_background</item>
+        <item name="colorOnSurface">@color/forest_text</item>
+        <item name="colorSurfaceVariant">#253325</item>
+    </style>
+
+    <!-- Theme 7: Royal Gold -->
+    <style name="Theme.GameApp.Royal" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/royal_primary</item>
+        <item name="colorSecondary">@color/royal_secondary</item>
+        <item name="android:windowBackground">@color/royal_background</item>
+        <item name="android:textColorPrimary">@color/royal_text</item>
+        <item name="colorSurface">@color/royal_background</item>
+        <item name="colorOnSurface">@color/royal_text</item>
+        <item name="colorSurfaceVariant">#F9F4E8</item>
+    </style>
+
+    <!-- Theme 8: Crimson Night -->
+    <style name="Theme.GameApp.Crimson" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/crimson_primary</item>
+        <item name="colorSecondary">@color/crimson_secondary</item>
+        <item name="android:windowBackground">@color/crimson_background</item>
+        <item name="android:textColorPrimary">@color/crimson_text</item>
+        <item name="colorSurface">@color/crimson_background</item>
+        <item name="colorOnSurface">@color/crimson_text</item>
+        <item name="colorSurfaceVariant">#1A0000</item>
+    </style>
 </resources>

@@ -9,7 +9,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
@@ -22,17 +21,8 @@ import kotlin.math.round
 
 /**
  * GameDetailActivity - Displays detailed information about a single game deal
- * 
- * Shows:
- * - Game title and thumbnail
- * - Store name
- * - Original and sale prices
- * - Discount percentage
- * - Deal rating
- * - Save to favorites option
- * - Link to view on store
  */
-class GameDetailActivity : AppCompatActivity() {
+class GameDetailActivity : BaseActivity() {
 
     private lateinit var gameDetailThumbnail: ImageView
     private lateinit var gameDetailTitle: TextView
@@ -214,14 +204,6 @@ class GameDetailActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Toast.makeText(this, "Could not open store page: ${e.message}", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    /**
-     * Check if the current game is in favorites and update button accordingly
-     */
-    private fun checkIfFavorited() {
-        // This method is kept for reference but is now handled by ViewModel
-        // The viewModel.setCurrentGame() call handles this
     }
 
     /**

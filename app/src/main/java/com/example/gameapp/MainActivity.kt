@@ -7,9 +7,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
@@ -21,24 +19,12 @@ import com.example.gameapp.viewmodel.GameDealsViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputEditText
+import androidx.activity.enableEdgeToEdge
 
 /**
  * MainActivity - Main screen for displaying game deals
- * This app integrates with the CheapShark API to fetch and display video game deals
- * Users can search for games and view current pricing from various stores
- *
- * Features:
- * - Search for games by title
- * - Display game deals from multiple stores
- * - Show real-time prices, discounts, and savings
- * - Load game thumbnails using Glide
- * - Display loading states and empty states
- * - Error handling with user-friendly messages
- * - Click on deals to view details
- * - Save games to favorites
- * - Settings and Notifications
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     // UI Components
     private lateinit var searchEditText: TextInputEditText
@@ -95,6 +81,12 @@ class MainActivity : AppCompatActivity() {
         if (::ninetyOffAlarmSwitch.isInitialized) {
             ninetyOffAlarmSwitch.isChecked = alarmManager.isNinetyPercentAlarmEnabled()
         }
+        
+        // Re-apply theme if it changed
+        val currentTheme = themeManager.getThemeResId()
+        // Since we can't easily check the current active theme resource ID on the activity
+        // without recreating if it changed, and MainActivity is the bottom of the stack usually.
+        // If the theme changed in Settings, we might need to recreate this when coming back.
     }
 
     /**
@@ -114,20 +106,17 @@ class MainActivity : AppCompatActivity() {
             openSettingsActivity()
         }
 
-        // Try to find favorites button (may not exist in old layout)
+        // Try to find favorites button
         try {
             favoritesButton = findViewById(R.id.favoritesButton)
             favoritesButton.setOnClickListener {
                 openFavoritesActivity()
             }
         } catch (e: Exception) {
-            // Favorites button not in layout, that's okay
+            // Favorites button not in layout
         }
     }
 
-    /**
-     * Setup RecyclerView with LinearLayoutManager and adapter
-     */
     private fun setupRecyclerView() {
         dealAdapter = GameDealAdapter(
             onItemClick = { game ->
@@ -150,10 +139,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Setup search button click listener
-     * Validates input and calls ViewModel to fetch game deals
-     */
     private fun setupSearchButton() {
         searchButton.setOnClickListener {
             val searchQuery = searchEditText.text.toString().trim()
@@ -201,32 +186,20 @@ class MainActivity : AppCompatActivity() {
         return parsedValue
     }
 
-    /**
-     * Setup LiveData observers from ViewModel
-     * Called once during onCreate to observe data changes
-     */
     private fun setupViewModelObservers() {
-        // Observe deals list changes
         viewModel.deals.observe(this, Observer { deals ->
             dealAdapter.updateDeals(deals)
             notifyAlarmMatches(deals)
         })
         
-        // Observe loading state
         viewModel.isLoading.observe(this, Observer { isLoading ->
             showLoading(isLoading)
         })
         
-        // Observe empty state
         viewModel.isEmpty.observe(this, Observer { isEmpty ->
-            if (isEmpty) {
-                showEmptyState(true)
-            } else {
-                showEmptyState(false)
-            }
+            showEmptyState(isEmpty)
         })
         
-        // Observe error messages
         viewModel.errorMessage.observe(this, Observer { error ->
             if (error.isNotEmpty()) {
                 handleError(error)
@@ -248,11 +221,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Open game detail activity for a selected deal
-     * 
-     * @param game The GameDeal to view details for
-     */
     private fun openGameDetail(game: GameDeal) {
         val intent = Intent(this, GameDetailActivity::class.java).apply {
             putExtra(GameDetailActivity.EXTRA_GAME_DEAL, game)
@@ -260,47 +228,23 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    /**
-     * Open favorites activity to view saved games
-     */
     private fun openFavoritesActivity() {
         startActivity(Intent(this, FavoritesActivity::class.java))
     }
 
-    /**
-     * Open settings activity
-     */
     private fun openSettingsActivity() {
         startActivity(Intent(this, SettingsActivity::class.java))
     }
 
-    /**
-     * Show or hide loading progress bar
-     * Used to provide visual feedback during API calls
-     *
-     * @param isLoading true to show loading, false to hide
-     */
     private fun showLoading(isLoading: Boolean) {
         loadingProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    /**
-     * Show or hide empty state message
-     * Displayed when no deals are found
-     *
-     * @param show true to show empty state, false to hide
-     */
     private fun showEmptyState(show: Boolean) {
         emptyStateLayout.visibility = if (show) View.VISIBLE else View.GONE
         dealsRecyclerView.visibility = if (show) View.GONE else View.VISIBLE
     }
 
-    /**
-     * Handle and display error messages to the user
-     * Shows a toast notification with error details
-     *
-     * @param message Error message to display
-     */
     private fun handleError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
