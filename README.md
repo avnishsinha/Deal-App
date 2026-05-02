@@ -98,11 +98,6 @@ Or use Android Studio Run button.
 5. Add to favorites → saves locally
 6. View favorites → manage saved games
 
-## Requirements Met
+#Final Notes
 
-✅ Part 1 - Setup (21/21)
-✅ Part 2 - Documentation (25/25)
-✅ Part 3 - Implementation (35/35)
-✅ Bonus - Game Details & Favorites
-
-**Total: 81/81 + Bonus**
+This project was collaboratively developed by both team members, who contributed to the design, development, and implementation of the application, including UI development, API integration, and overall functionality.
